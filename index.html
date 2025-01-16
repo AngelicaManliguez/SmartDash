@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Smart Dash</title>
+        <!-- Importing the Poppins font from Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <!-- Link to the CSS file -->
+        <link rel="stylesheet" href="App.css">
+      </head>
+<body>
+  <div class="smart-dash-container">
+    <h1 class="smart-dash-title">SMART DASH</h1>
+
+    <div class="smart-dash-layout">
+      <!-- Left section with toggle switches -->
+      <div class="smart-dash-section-left">
+        
+        <div class="toggle-item" id="distraction">
+          <h5 class="toggle-label">Driver Distraction Detection</h5>
+          <div class="toggle-switch" onclick="toggleSwitch('distraction')">
+            <div class="slider"></div>
+          </div>
+        </div>
+        <div class="toggle-item" id="fatigue">
+          <h5 class="toggle-label">Drivers Fatigue or Sleep Detection</h5>
+          <div class="toggle-switch" onclick="toggleSwitch('fatigue')">
+            <div class="slider"></div>
+          </div>
+        </div>
+        <div class="toggle-item" id="facial">
+          <h5 class="toggle-label">Facial Expression Analysis</h5>
+          <div class="toggle-switch" onclick="toggleSwitch('facial')">
+            <div class="slider"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Webcam Section -->
+      <div class="smart-dash-webcam">
+        <video id="webcam" width="700" height="auto" autoplay></video>
+      </div>
+
+      <!-- Right section with toggle switches -->
+      <div class="smart-dash-section-right">
+        
+        <div class="toggle-item" id="fire">
+          <div class="toggle-switch" onclick="toggleSwitch('fire')">
+            <div class="slider"></div>
+          </div>
+          <h5 class="toggle-label">Fire Detection</h5>
+        </div>
+        
+        <div class="toggle-item" id="weapons">
+          <div class="toggle-switch" onclick="toggleSwitch('weapons')">
+            <div class="slider"></div>
+          </div>
+          <h5 class="toggle-label">Deadly Weapon Detection</h5>
+        </div>
+      </div>
+    </div>
+
+    <!-- Model Grid Section -->
+    <div class="models-grid">
+        <!-- Model 1: Fire Detection -->
+        <div class="models-container">
+            <h3 class="label">FIRE DETECTION</h3>
+            <p>This system detects fire hazards inside the vehicle.</p>
+            <div class="metrics">
+                <div class="metric-item">
+                    <p>mAP</p>
+                    <progress class="map-progress" value="98.6" max="100"></progress>
+                    <span class="progress-text">98.6%</span>
+                </div>
+                <div class="metric-item">
+                    <p>Precision</p>
+                    <progress class="precision-progress" value="98.5" max="100"></progress>
+                    <span class="progress-text">98.5%</span>
+                </div>
+                <div class="metric-item">
+                    <p>Recall</p>
+                    <progress class="recall-progress" value="95.1" max="100"></progress>
+                    <span class="progress-text">95.1%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model 2: Weapon Detection -->
+        <div class="models-container">
+            <h3 class="label">WEAPON DETECTION</h3>
+            <p>This system detects potential weapons in the vehicle.</p>
+            <div class="metrics">
+                <div class="metric-item">
+                    <p>mAP</p>
+                    <progress class="map-progress" value="98.3" max="100"></progress>
+                    <span class="progress-text">98.3%</span>
+                </div>
+                <div class="metric-item">
+                    <p>Precision</p>
+                    <progress class="precision-progress" value="97.8" max="100"></progress>
+                    <span class="progress-text">97.8%</span>
+                </div>
+                <div class="metric-item">
+                    <p>Recall</p>
+                    <progress class="recall-progress" value="93.8" max="100"></progress>
+                    <span class="progress-text">93.8%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model 3: Driver Fatigue Detection -->
+        <div class="models-container">
+            <h3 class="label">DRIVER FATIGUE DETECTION</h3>
+            <p>Detects signs of driver fatigue using facial analysis and behavior.</p>
+            <div class="metrics">
+                <div class="metric-item">
+                    <p>mAP</p>
+                    <progress class="map-progress" value="99.0" max="100"></progress>
+                    <span class="progress-text">99.0%</span>
+                </div>
+                <div class="metric-item">
+                    <p>Precision</p>
+                    <progress class="precision-progress" value="98.1" max="100"></progress>
+                    <span class="progress-text">98.1%</span>
+                </div>
+                <div class="metric-item">
+                    <p>Recall</p>
+                    <progress class="recall-progress" value="98.6" max="100"></progress>
+                    <span class="progress-text">98.6%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model 4: Distracted Driving Detection -->
+        <div class="models-container">
+            <h3 class="label">DISTRACTED DRIVING DETECTION</h3>
+            <p>Detects distracted driving behaviors to enhance safety.</p>
+            <div class="metrics">
+                <div class="metric-item">
+                    <p>mAP</p>
+                    <progress class="map-progress" value="95.4" max="100"></progress>
+                    <span class="progress-text">95.4%</span>
+                </div>
+                <div class="metric-item">
+                    <p>Precision</p>
+                    <progress class="precision-progress" value="94.3" max="100"></progress>
+                    <span class="progress-text">94.3%</span>
+                </div>
+                <div class="metric-item">
+                    <p>Recall</p>
+                    <progress class="recall-progress" value="91.5" max="100"></progress>
+                    <span class="progress-text">91.5%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model 5: Driver Facial Expression Detection -->
+        <div class="models-container">
+            <h3 class="label">DRIVER FACIAL EXPRESSION DETECTION</h3>
+            <p>This system detects facial expressions to identify driving conditions.</p>
+            <div class="metrics">
+                <div class="metric-item">
+                    <p>mAP</p>
+                    <progress class="map-progress" value="97.6" max="100"></progress>
+                    <span class="progress-text">97.6%</span>
+                </div>
+                <div class="metric-item">
+                    <p>Precision</p>
+                    <progress class="precision-progress" value="96.3" max="100"></progress>
+                    <span class="progress-text">96.3%</span>
+                </div>
+                <div class="metric-item">
+                    <p>Recall</p>
+                    <progress class="recall-progress" value="96.5" max="100"></progress>
+                    <span class="progress-text">96.5%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <p class="credits">&copy; 2025 Smart Dash. All rights reserved.</p>
+        <p class="developer">Developed by Noriel Achero and Angelica Mae Manliguez</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // JavaScript to update progress bar values with text inside
+    const progressBars = document.querySelectorAll('progress');
+    progressBars.forEach((progressBar) => {
+        const value = progressBar.value;
+        const max = progressBar.max;
+        const percentage = (value / max) * 100;
+        const text = progressBar.nextElementSibling;
+        text.textContent = `${percentage.toFixed(1)}%`;
+    });
+</script>
+</body>
+</html>
