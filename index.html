@@ -1,205 +1,677 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Smart Dash</title>
-        <!-- Importing the Poppins font from Google Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-        <!-- Link to the CSS file -->
-        <link rel="stylesheet" href="App.css">
-      </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-Time Detection</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-image: url('https://img.freepik.com/free-vector/white-abstract-background_23-2148806276.jpg?semt=ais_hybrid');
+    background-repeat: no-repeat;
+    background-size: cover;
+      background-color: #f8f9fa; /* Light background */
+      color: #343a40; /* Dark text for readability */
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      align-items: center;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color:#00025e; /* Blue for the title */
+      margin-bottom: 40px;
+      font-weight: bold;
+    }
+
+    p, .description {
+      color: #6c757d; /* Gray for the paragraph */
+      margin-bottom: 20px;
+    }
+
+    #camera-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 480px;
+      margin-bottom: 30px;
+    }
+
+    video, canvas {
+      max-width: 100%;
+      border-radius: 10px;
+      width: 640px; /* Set the camera width */
+      height: 480px; /* Set the camera height */
+    }
+
+    #overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0; /* Make sure the overlay stretches to fill the container */
+      bottom: 0; /* Stretch to the full height */
+      width: 100%; /* Match the width of the container */
+      height: 480px; /* Match the height of the container */
+      border-radius: 10px;
+      z-index: 10; /* Ensure the overlay is above the camera content */
+    }
+
+    .toggle-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .form-check-label {
+      color: #343a40;
+    }
+
+    .alert-info {
+      background-color: #e9ecef; /* Light gray background */
+      color: #343a40;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+
+      /* Progress Bar Styles */
+/* Progress Bar Styles */
+progress {
+    width: 100%;
+    height: 20px;
+    border-radius: 10px;
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #e0e0e0; /* Background color of the progress bar */
+}
+
+progress::-webkit-progress-bar {
+    background-color: #e0e0e0; /* Light gray background */
+    border-radius: 10px;
+}
+
+progress::-webkit-progress-value {
+    border-radius: 10px;
+    background-color: #00bcd4;  /* Default background color for the progress value */
+}
+
+progress::-moz-progress-bar {
+    background-color: #00bcd4;  /* Default background color for the progress value in Firefox */
+    border-radius: 10px;
+}
+
+/* Map Progress */
+.map-progress::-webkit-progress-value {
+    background-color: #00bcd4;  /* Blue for mAP */
+}
+
+.map-progress::-moz-progress-bar {
+    background-color: #00bcd4;  /* Blue for mAP in Firefox */
+}
+
+/* Precision Progress */
+.precision-progress::-webkit-progress-value {
+    background-color: #ffeb3b;  /* Yellow for Precision */
+}
+
+.precision-progress::-moz-progress-bar {
+    background-color: #ffeb3b;  /* Yellow for Precision in Firefox */
+}
+
+/* Recall Progress */
+.recall-progress::-webkit-progress-value {
+    background-color: #f50057;  /* Pink for Recall */
+}
+
+.recall-progress::-moz-progress-bar {
+    background-color: #f50057;  /* Pink for Recall in Firefox */
+}
+
+/* Progress Text */
+.progress-text {
+    display: inline-block;
+    margin-top: 5px;
+    margin-left: 10px;
+    color: #ffffff;
+}
+
+/* Models and Progress Bar Containers */
+.models-container {
+    padding: 20px;
+    background-color: #00025e;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 700px;
+    margin: 0 auto;
+    margin-top: 50px;
+    transition: all 0.3s ease;
+}
+
+.models-container:hover {
+    background-color: #000337;
+    transform: scale(1.05);
+}
+
+.label {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.models-container p {
+    font-size: 14px;
+    color: #d6d6d6;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.metrics {
+    width: 400px;
+    margin: 0 auto;
+}
+
+.metric-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.metric-item p {
+    min-width: 100px;
+    margin: 0 10px 0 0;
+    font-size: 14px;
+    color: #ffffff;
+}
+  
+  /* Footer Section */
+  .footer {
+    background-color: #12229d;
+    color: white;
+    text-align: center;
+    padding: 15px 20px;
+    margin-top: 30px;
+    margin-left: -20px;
+    margin-right: -20px;
+    margin-bottom: -20px;
+  }
+  
+  .footer-content p {
+    margin: 5px 0;
+  }
+  
+  .credits {
+    font-weight: bold;
+    font-size: 14px;
+  }
+  
+  .developer {
+    font-size: 13px;
+  }
+
+    @media (max-width: 768px) {
+      .btn-custom {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
 <body>
-  <div class="smart-dash-container">
-    <h1 class="smart-dash-title">SMART DASH</h1>
+  <div class="container">
+    <h1>SMART DASHCAM DETECTION SYSTEM</h1>
+    <p class="lead">Welcome to the Smart Dashcam Detection System, an advanced solution designed to enhance safety on the road by monitoring real-time driving behaviors. This system leverages cutting-edge AI models to detect critical driving conditions such as driver fatigue, distracted driving, aggressive behavior, in-car fires, and even weapons. Whether you're concerned about drowsy driving, phone usage, or potential hazards inside your vehicle, our system provides immediate alerts and visual feedback, helping ensure both your safety and the safety of others on the road.</p>
 
-    <div class="smart-dash-layout">
-      <!-- Left section with toggle switches -->
-      <div class="smart-dash-section-left">
-        
-        <div class="toggle-item" id="distraction">
-          <h5 class="toggle-label">Driver Distraction Detection</h5>
-          <div class="toggle-switch" onclick="toggleSwitch('distraction')">
-            <div class="slider"></div>
-          </div>
-        </div>
-        <div class="toggle-item" id="fatigue">
-          <h5 class="toggle-label">Drivers Fatigue or Sleep Detection</h5>
-          <div class="toggle-switch" onclick="toggleSwitch('fatigue')">
-            <div class="slider"></div>
-          </div>
-        </div>
-        <div class="toggle-item" id="facial">
-          <h5 class="toggle-label">Facial Expression Analysis</h5>
-          <div class="toggle-switch" onclick="toggleSwitch('facial')">
-            <div class="slider"></div>
-          </div>
-        </div>
+    <!-- Camera Section -->
+    <div id="camera-container" class="d-flex justify-content-center align-items-center mb-4">
+      <video id="camera" autoplay playsinline></video>
+      <canvas id="overlay" width="640" height="480"></canvas>
+    </div>
+
+    <!-- Detection Settings Card -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4>Detection Settings</h4>
       </div>
-
-      <!-- Webcam Section -->
-      <div class="smart-dash-webcam">
-        <video id="webcam" width="700" height="auto" autoplay></video>
-      </div>
-
-      <!-- Right section with toggle switches -->
-      <div class="smart-dash-section-right">
-        
-        <div class="toggle-item" id="fire">
-          <div class="toggle-switch" onclick="toggleSwitch('fire')">
-            <div class="slider"></div>
-          </div>
-          <h5 class="toggle-label">Fire Detection</h5>
+      <div class="card-body">
+        <div class="toggle-container">
+          <label for="toggleDriverFatigueDetection">Driver Fatigue Detection:</label>
+          <input type="checkbox" id="toggleDriverFatigueDetection" checked>
         </div>
-        
-        <div class="toggle-item" id="weapons">
-          <div class="toggle-switch" onclick="toggleSwitch('weapons')">
-            <div class="slider"></div>
-          </div>
-          <h5 class="toggle-label">Deadly Weapon Detection</h5>
+        <div class="toggle-container">
+          <label for="toggleDistractedDriverDetection">Distracted Driver Detection:</label>
+          <input type="checkbox" id="toggleDistractedDriverDetection" checked>
+        </div>
+        <div class="toggle-container">
+          <label for="toggleAngryDriverDetection">Angry Driver Detection:</label>
+          <input type="checkbox" id="toggleAngryDriverDetection" checked>
+        </div>
+        <div class="toggle-container">
+          <label for="toggleInCarFireDetection">In-car Fire Detection:</label>
+          <input type="checkbox" id="toggleInCarFireDetection" checked>
+        </div>
+        <div class="toggle-container">
+          <label for="toggleWeaponDetection">Weapon Detection:</label>
+          <input type="checkbox" id="toggleWeaponDetection" checked>
         </div>
       </div>
     </div>
 
-    <!-- Model Grid Section -->
-    <div class="models-grid">
-        <!-- Model 1: Fire Detection -->
-        <div class="models-container">
-            <h3 class="label">FIRE DETECTION</h3>
-            <p>This system detects fire hazards inside the vehicle.</p>
-            <div class="metrics">
-                <div class="metric-item">
-                    <p>mAP</p>
-                    <progress class="map-progress" value="98.6" max="100"></progress>
-                    <span class="progress-text">98.6%</span>
-                </div>
-                <div class="metric-item">
-                    <p>Precision</p>
-                    <progress class="precision-progress" value="98.5" max="100"></progress>
-                    <span class="progress-text">98.5%</span>
-                </div>
-                <div class="metric-item">
-                    <p>Recall</p>
-                    <progress class="recall-progress" value="95.1" max="100"></progress>
-                    <span class="progress-text">95.1%</span>
-                </div>
-            </div>
-        </div>
 
-        <!-- Model 2: Weapon Detection -->
-        <div class="models-container">
-            <h3 class="label">WEAPON DETECTION</h3>
-            <p>This system detects potential weapons in the vehicle.</p>
-            <div class="metrics">
-                <div class="metric-item">
-                    <p>mAP</p>
-                    <progress class="map-progress" value="98.3" max="100"></progress>
-                    <span class="progress-text">98.3%</span>
-                </div>
-                <div class="metric-item">
-                    <p>Precision</p>
-                    <progress class="precision-progress" value="97.8" max="100"></progress>
-                    <span class="progress-text">97.8%</span>
-                </div>
-                <div class="metric-item">
-                    <p>Recall</p>
-                    <progress class="recall-progress" value="93.8" max="100"></progress>
-                    <span class="progress-text">93.8%</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Model 3: Driver Fatigue Detection -->
-        <div class="models-container">
-            <h3 class="label">DRIVER FATIGUE DETECTION</h3>
-            <p>Detects signs of driver fatigue using facial analysis and behavior.</p>
-            <div class="metrics">
-                <div class="metric-item">
-                    <p>mAP</p>
-                    <progress class="map-progress" value="99.0" max="100"></progress>
-                    <span class="progress-text">99.0%</span>
-                </div>
-                <div class="metric-item">
-                    <p>Precision</p>
-                    <progress class="precision-progress" value="98.1" max="100"></progress>
-                    <span class="progress-text">98.1%</span>
-                </div>
-                <div class="metric-item">
-                    <p>Recall</p>
-                    <progress class="recall-progress" value="98.6" max="100"></progress>
-                    <span class="progress-text">98.6%</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Model 4: Distracted Driving Detection -->
-        <div class="models-container">
-            <h3 class="label">DISTRACTED DRIVING DETECTION</h3>
-            <p>Detects distracted driving behaviors to enhance safety.</p>
-            <div class="metrics">
-                <div class="metric-item">
-                    <p>mAP</p>
-                    <progress class="map-progress" value="95.4" max="100"></progress>
-                    <span class="progress-text">95.4%</span>
-                </div>
-                <div class="metric-item">
-                    <p>Precision</p>
-                    <progress class="precision-progress" value="94.3" max="100"></progress>
-                    <span class="progress-text">94.3%</span>
-                </div>
-                <div class="metric-item">
-                    <p>Recall</p>
-                    <progress class="recall-progress" value="91.5" max="100"></progress>
-                    <span class="progress-text">91.5%</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Model 5: Driver Facial Expression Detection -->
-        <div class="models-container">
-            <h3 class="label">DRIVER FACIAL EXPRESSION DETECTION</h3>
-            <p>This system detects facial expressions to identify driving conditions.</p>
-            <div class="metrics">
-                <div class="metric-item">
-                    <p>mAP</p>
-                    <progress class="map-progress" value="97.6" max="100"></progress>
-                    <span class="progress-text">97.6%</span>
-                </div>
-                <div class="metric-item">
-                    <p>Precision</p>
-                    <progress class="precision-progress" value="96.3" max="100"></progress>
-                    <span class="progress-text">96.3%</span>
-                </div>
-                <div class="metric-item">
-                    <p>Recall</p>
-                    <progress class="recall-progress" value="96.5" max="100"></progress>
-                    <span class="progress-text">96.5%</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="footer-content">
-        <p class="credits">&copy; 2025 Smart Dash. All rights reserved.</p>
-        <p class="developer">Developed by Noriel Achero and Angelica Mae Manliguez</p>
+      <!-- Prediction Output Section -->
+      <div id="prediction-output" class="alert-info">
+        <h4>Detected Objects:</h4>
+        <ul id="predictions-list">
+          <!-- Dynamic predictions will be displayed here -->
+        </ul>
       </div>
-    </footer>
+        <!-- Model Grid Section -->
+        <div class="models-grid">
+          <!-- Model 1: Fire Detection -->
+          <div class="models-container">
+              <h3 class="label">FIRE DETECTION</h3>
+              <p>This system detects fire hazards inside the vehicle.</p>
+              <div class="metrics">
+                  <div class="metric-item">
+                      <p>mAP</p>
+                      <progress class="map-progress" value="98.6" max="100"></progress>
+                      <span class="progress-text">98.6%</span>
+                  </div>
+                  <div class="metric-item">
+                      <p>Precision</p>
+                      <progress class="precision-progress" value="98.5" max="100"></progress>
+                      <span class="progress-text">98.5%</span>
+                  </div>
+                  <div class="metric-item">
+                      <p>Recall</p>
+                      <progress class="recall-progress" value="95.1" max="100"></progress>
+                      <span class="progress-text">95.1%</span>
+                  </div>
+              </div>
+          </div>
+  
+          <!-- Model 2: Weapon Detection -->
+          <div class="models-container">
+              <h3 class="label">WEAPON DETECTION</h3>
+              <p>This system detects potential weapons in the vehicle.</p>
+              <div class="metrics">
+                  <div class="metric-item">
+                      <p>mAP</p>
+                      <progress class="map-progress" value="98.3" max="100"></progress>
+                      <span class="progress-text">98.3%</span>
+                  </div>
+                  <div class="metric-item">
+                      <p>Precision</p>
+                      <progress class="precision-progress" value="97.8" max="100"></progress>
+                      <span class="progress-text">97.8%</span>
+                  </div>
+                  <div class="metric-item">
+                      <p>Recall</p>
+                      <progress class="recall-progress" value="93.8" max="100"></progress>
+                      <span class="progress-text">93.8%</span>
+                  </div>
+              </div>
+          </div>
+  
+          <!-- Model 3: Driver Fatigue Detection -->
+          <div class="models-container">
+              <h3 class="label">DRIVER FATIGUE DETECTION</h3>
+              <p>Detects signs of driver fatigue using facial analysis and behavior.</p>
+              <div class="metrics">
+                  <div class="metric-item">
+                      <p>mAP</p>
+                      <progress class="map-progress" value="99.0" max="100"></progress>
+                      <span class="progress-text">99.0%</span>
+                  </div>
+                  <div class="metric-item">
+                      <p>Precision</p>
+                      <progress class="precision-progress" value="98.1" max="100"></progress>
+                      <span class="progress-text">98.1%</span>
+                  </div>
+                  <div class="metric-item">
+                      <p>Recall</p>
+                      <progress class="recall-progress" value="98.6" max="100"></progress>
+                      <span class="progress-text">98.6%</span>
+                  </div>
+              </div>
+          </div>
+  
+          <!-- Model 4: Distracted Driving Detection -->
+          <div class="models-container">
+              <h3 class="label">DISTRACTED DRIVING DETECTION</h3>
+              <p>Detects distracted driving behaviors to enhance safety.</p>
+              <div class="metrics">
+                  <div class="metric-item">
+                      <p>mAP</p>
+                      <progress class="map-progress" value="95.4" max="100"></progress>
+                      <span class="progress-text">95.4%</span>
+                  </div>
+                  <div class="metric-item">
+                      <p>Precision</p>
+                      <progress class="precision-progress" value="94.3" max="100"></progress>
+                      <span class="progress-text">94.3%</span>
+                  </div>
+                  <div class="metric-item">
+                      <p>Recall</p>
+                      <progress class="recall-progress" value="91.5" max="100"></progress>
+                      <span class="progress-text">91.5%</span>
+                  </div>
+              </div>
+          </div>
+  
+          <!-- Model 5: Driver Facial Expression Detection -->
+          <div class="models-container">
+              <h3 class="label">DRIVER FACIAL EXPRESSION DETECTION</h3>
+              <p>This system detects facial expressions to identify driving conditions.</p>
+              <div class="metrics">
+                  <div class="metric-item">
+                      <p>mAP</p>
+                      <progress class="map-progress" value="97.6" max="100"></progress>
+                      <span class="progress-text">97.6%</span>
+                  </div>
+                  <div class="metric-item">
+                      <p>Precision</p>
+                      <progress class="precision-progress" value="96.3" max="100"></progress>
+                      <span class="progress-text">96.3%</span>
+                  </div>
+                  <div class="metric-item">
+                      <p>Recall</p>
+                      <progress class="recall-progress" value="96.5" max="100"></progress>
+                      <span class="progress-text">96.5%</span>
+                  </div>
+              </div>
+          </div>
+
+  
   </div>
 
-  <script src="app.js"></script>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // JavaScript to update progress bar values with text inside
-    const progressBars = document.querySelectorAll('progress');
-    progressBars.forEach((progressBar) => {
-        const value = progressBar.value;
-        const max = progressBar.max;
-        const percentage = (value / max) * 100;
-        const text = progressBar.nextElementSibling;
-        text.textContent = `${percentage.toFixed(1)}%`;
+    const video = document.getElementById("camera");
+    const overlay = document.getElementById("overlay");
+    const ctx = overlay.getContext("2d");
+    const predictionsList = document.getElementById("predictions-list");
+    const toggleDriverFatigueDetection = document.getElementById("toggleDriverFatigueDetection");
+    const toggleDistractedDriverDetection = document.getElementById("toggleDistractedDriverDetection");
+    const toggleAngryDriverDetection = document.getElementById("toggleAngryDriverDetection");
+    const toggleInCarFireDetection = document.getElementById("toggleInCarFireDetection");
+    const toggleWeaponDetection = document.getElementById("toggleWeaponDetection");
+
+    const API_URL = "https://detect.roboflow.com";
+    const API_KEY = "jPZmwGVZEbKUi63dZVJC";
+    const DRIVER_FATIGUE_MODEL_ID = "driver-fatigue/1";
+    const DISTRACTED_DRIVER_MODEL_ID = "distracted-driving-fsygw/3";
+    const ANGRY_DRIVER_MODEL_ID = "driver-facial-expression/3";
+    const FIRE_DETECTION_MODEL_ID = "fire-detection-yolov8-ylrh2-t9njv/2";
+    const WEAPON_DETECTION_MODEL_ID = "weapon-detection-dinou-qdunh-ihnjy/1";  // Updated model ID
+
+    let driverFatigueDetectionEnabled = true;
+    let distractedDriverDetectionEnabled = true;
+    let angryDriverDetectionEnabled = true;
+    let inCarFireDetectionEnabled = true;
+    let weaponDetectionEnabled = true;
+
+    // Initialize the audio element for drowsy, distracted, angry driver detection, fire detection, and weapon detection
+    const fatigueAudio = new Audio('1.mp3');
+    const distractedAudio = new Audio('1.mp3'); // Same audio for distracted driver detection
+    const angryAudio = new Audio('1.mp3'); // Audio for angry driver detection
+    const fireAudio = new Audio('1.mp3');  // Audio for in-car fire detection
+    const weaponAudio = new Audio('1.mp3'); // Audio for weapon detection
+
+    // Start the camera feed
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        video.srcObject = stream;
+      })
+      .catch(err => console.error("Error accessing the camera: ", err));
+
+    // Function to send frames to the Roboflow API for object detection
+    async function runDetection() {
+      ctx.clearRect(0, 0, overlay.width, overlay.height);
+      predictionsList.innerHTML = ''; // Clear previous predictions
+
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const tempCtx = canvas.getContext("2d");
+      tempCtx.drawImage(video, 0, 0);
+
+      canvas.toBlob(async (blob) => {
+        const formData = new FormData();
+        formData.append("file", blob);
+
+        try {
+          // Driver Fatigue Detection
+          if (driverFatigueDetectionEnabled) {
+            const fatigueResponse = await fetch(`${API_URL}/${DRIVER_FATIGUE_MODEL_ID}?api_key=${API_KEY}`, {
+              method: "POST",
+              body: formData,
+            });
+
+            const fatigueData = await fatigueResponse.json();
+            if (fatigueData.predictions) {
+              fatigueData.predictions.forEach(prediction => {
+                const { x, y, width, height, class: label, confidence } = prediction;
+                const boxX = x - width / 2;
+                const boxY = y - height / 2;
+
+                ctx.strokeStyle = "lime";
+                ctx.lineWidth = 2;
+                ctx.strokeRect(boxX, boxY, width, height);
+                ctx.fillStyle = "lime";
+                ctx.font = "16px Arial";
+                ctx.fillText(label, boxX, boxY - 10);
+
+                const listItem = document.createElement("li");
+                listItem.innerHTML =  `<strong>Class:</strong> ${label} <strong>Confidence:</strong> ${(confidence * 100).toFixed(2)}%`;
+                predictionsList.appendChild(listItem);
+
+                // Check if the class is 'Drowsy' and play the audio for 2 seconds
+                if (label === 'Drowsy' && confidence > 0.70) {
+                  fatigueAudio.play();
+                  setTimeout(() => {
+                    fatigueAudio.pause();  // Stop the audio after 2 seconds
+                    fatigueAudio.currentTime = 0;  // Reset audio to the beginning
+                  }, 2000);
+                }
+              });
+            }
+          }
+
+          // Distracted Driver Detection
+          if (distractedDriverDetectionEnabled) {
+            const distractedResponse = await fetch(`${API_URL}/${DISTRACTED_DRIVER_MODEL_ID}?api_key=${API_KEY}`, {
+              method: "POST",
+              body: formData,
+            });
+
+            const distractedData = await distractedResponse.json();
+            if (distractedData.predictions) {
+              distractedData.predictions.forEach(prediction => {
+                const { x, y, width, height, class: label, confidence } = prediction;
+                const boxX = x - width / 2;
+                const boxY = y - height / 2;
+
+                ctx.strokeStyle = "red";
+                ctx.lineWidth = 2;
+                ctx.strokeRect(boxX, boxY, width, height);
+                ctx.fillStyle = "red";
+                ctx.font = "16px Arial";
+                ctx.fillText(label, boxX, boxY - 10);
+
+                const listItem = document.createElement("li");
+                listItem.innerHTML =  `<strong>Class:</strong> ${label} <strong>Confidence:</strong> ${(confidence * 100).toFixed(2)}%`;
+                predictionsList.appendChild(listItem);
+
+                // Check if the class is 'Eating Drinking' or 'Using Phone' and play the audio for 2 seconds
+                if ((label === 'Eating Drinking' || label === 'Using Phone') && confidence > 0.70) {
+                  distractedAudio.play();
+                  setTimeout(() => {
+                    distractedAudio.pause();  // Stop the audio after 2 seconds
+                    distractedAudio.currentTime = 0;  // Reset audio to the beginning
+                  }, 2000);
+                }
+              });
+            }
+          }
+
+          // Angry Driver Detection
+          if (angryDriverDetectionEnabled) {
+            const angryResponse = await fetch(`${API_URL}/${ANGRY_DRIVER_MODEL_ID}?api_key=${API_KEY}`, {
+              method: "POST",
+              body: formData,
+            });
+
+            const angryData = await angryResponse.json();
+            if (angryData.predictions) {
+              angryData.predictions.forEach(prediction => {
+                const { x, y, width, height, class: label, confidence } = prediction;
+
+                if (confidence >= 0.10) {  // Only consider predictions with confidence of 10% or above
+                  const boxX = x - width / 2;
+                  const boxY = y - height / 2;
+
+                  ctx.strokeStyle = "orange";
+                  ctx.lineWidth = 2;
+                  ctx.strokeRect(boxX, boxY, width, height);
+                  ctx.fillStyle = "orange";
+                  ctx.font = "16px Arial";
+                  ctx.fillText(label, boxX, boxY - 10);
+
+                  const listItem = document.createElement("li");
+                  listItem.innerHTML =  `<strong>Class:</strong> ${label} <strong>Confidence:</strong> ${(confidence * 100).toFixed(2)}%`;
+                  predictionsList.appendChild(listItem);
+
+                  // Check if the class is 'Angry' and play the audio for 2 seconds
+                  if (label === 'Angry' && confidence > 0.10) {
+                    angryAudio.play();
+                    setTimeout(() => {
+                      angryAudio.pause();  // Stop the audio after 2 seconds
+                      angryAudio.currentTime = 0;  // Reset audio to the beginning
+                    }, 2000);
+                  }
+                }
+              });
+            }
+          }
+
+          // In-car Fire Detection
+          if (inCarFireDetectionEnabled) {
+            const fireResponse = await fetch(`${API_URL}/${FIRE_DETECTION_MODEL_ID}?api_key=${API_KEY}`, {
+              method: "POST",
+              body: formData,
+            });
+
+            const fireData = await fireResponse.json();
+            if (fireData.predictions) {
+              fireData.predictions.forEach(prediction => {
+                const { x, y, width, height, class: label, confidence } = prediction;
+
+                // Only show fire detection if confidence is above 70%
+                if (confidence > 0.70) {
+                  const boxX = x - width / 2;
+                  const boxY = y - height / 2;
+
+                  ctx.strokeStyle = "red";
+                  ctx.lineWidth = 2;
+                  ctx.strokeRect(boxX, boxY, width, height);
+                  ctx.fillStyle = "red";
+                  ctx.font = "16px Arial";
+                  ctx.fillText(label, boxX, boxY - 10);
+
+                  const listItem = document.createElement("li");
+                  listItem.innerHTML =  `<strong>Class:</strong> ${label} <strong>Confidence:</strong> ${(confidence * 100).toFixed(2)}%`;
+                  predictionsList.appendChild(listItem);
+
+                  // Play the fire detection audio for 2 seconds
+                  fireAudio.play();
+                  setTimeout(() => {
+                    fireAudio.pause();  // Stop the audio after 2 seconds
+                    fireAudio.currentTime = 0;  // Reset audio to the beginning
+                  }, 2000);
+                }
+              });
+            }
+          }
+
+          // Weapon Detection
+          if (weaponDetectionEnabled) {
+            const weaponResponse = await fetch(`${API_URL}/${WEAPON_DETECTION_MODEL_ID}?api_key=${API_KEY}`, {
+              method: "POST",
+              body: formData,
+            });
+
+            const weaponData = await weaponResponse.json();
+            if (weaponData.predictions) {
+              weaponData.predictions.forEach(prediction => {
+                const { x, y, width, height, class: label, confidence } = prediction;
+                const boxX = x - width / 2;
+                const boxY = y - height / 2;
+
+                ctx.strokeStyle = "purple";
+                ctx.lineWidth = 2;
+                ctx.strokeRect(boxX, boxY, width, height);
+                ctx.fillStyle = "purple";
+                ctx.font = "16px Arial";
+                ctx.fillText(label, boxX, boxY - 10);
+
+                const listItem = document.createElement("li");
+                listItem.innerHTML =  `<strong>Class:</strong> ${label} <strong>Confidence:</strong> ${(confidence * 100).toFixed(2)}%`;
+                predictionsList.appendChild(listItem);
+
+                // Play the weapon detection audio for 2 seconds
+                weaponAudio.play();
+                setTimeout(() => {
+                  weaponAudio.pause();  // Stop the audio after 2 seconds
+                  weaponAudio.currentTime = 0;  // Reset audio to the beginning
+                }, 2000);
+              });
+            }
+          }
+
+          // Add other detection models as necessary...
+        } catch (error) {
+          console.error("Error during inference:", error);
+        }
+      }, "image/jpeg");
+    }
+
+    // Listen for changes on the toggle switches
+    toggleDriverFatigueDetection.addEventListener("change", () => {
+      driverFatigueDetectionEnabled = toggleDriverFatigueDetection.checked;
     });
-</script>
+    toggleDistractedDriverDetection.addEventListener("change", () => {
+      distractedDriverDetectionEnabled = toggleDistractedDriverDetection.checked;
+    });
+    toggleAngryDriverDetection.addEventListener("change", () => {
+      angryDriverDetectionEnabled = toggleAngryDriverDetection.checked;
+    });
+    toggleInCarFireDetection.addEventListener("change", () => {
+      inCarFireDetectionEnabled = toggleInCarFireDetection.checked;
+    });
+    toggleWeaponDetection.addEventListener("change", () => {
+      weaponDetectionEnabled = toggleWeaponDetection.checked;
+    });
+
+    setInterval(runDetection, 100);
+  </script>
+
+<footer class="footer">
+  <div class="footer-content">
+    <p class="credits">&copy; 2025 Smart Dash. All rights reserved.</p>
+    <p class="developer">Developed by Noriel Achero and Angelica Mae Manliguez</p>
+  </div>
+</footer>
 </body>
+
 </html>
